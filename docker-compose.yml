@@ -1,0 +1,17 @@
+# Levanta un PostgreSQL con la base de datos ya creada y poblada.
+#   docker compose up -d      -> arranca (la primera vez ejecuta 01_crear.sql y 02_poblar.sql)
+#   docker compose down -v    -> lo para y borra los datos
+# Conexión: localhost:5433 · BD consultora · usuario consultora · contraseña consultora
+services:
+  postgres:
+    image: postgres:18
+    container_name: consultora_pg
+    environment:
+      POSTGRES_USER: consultora
+      POSTGRES_PASSWORD: consultora
+      POSTGRES_DB: consultora
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./sql/01_crear.sql:/docker-entrypoint-initdb.d/01_crear.sql:ro
+      - ./sql/02_poblar.sql:/docker-entrypoint-initdb.d/02_poblar.sql:ro
